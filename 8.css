@@ -1,0 +1,64 @@
+body{
+	text-align: center;
+	background: #000;
+	color: #fff;
+	font-family: "8bit";
+}
+
+
+
+canvas{
+	margin:auto;
+
+	border-radius: 2px;
+	z-index: 100;
+	opacity: 0.2;
+	background: #ccc;
+
+}
+
+
+@font-face{
+	/* font source: http://mfs.sub.jp/font.html */
+	font-family: "8bit";
+	src: url(m01.TTF);
+}
+h1{
+	font-size: 220%;
+}
+
+h2{
+	font-size: 105%;
+}
+
+
+div#instructions{
+	z-index: 0;
+	padding-top: 100px;
+	width: 800px;
+	height: 120px;
+	margin: 40px auto;
+	border-radius: 5px;
+	background: #aaa;
+	border: 5px solid #fff;
+}
+
+ul#buttons{
+	
+}
+
+ul#buttons li{
+	display: inline;
+}
+
+ul#buttons li button{
+	font-family: "8bit";
+  font-size: 100%;
+  color: #fff;
+  text-shadow: 1px 1px #333;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  margin-top: 10px;
+  padding: 4px 6px;
+  background: -webkit-gradient(linear, left top, left bottom, from(#bbb), to(#666));
+}
