@@ -5,6 +5,12 @@ body{
 	font-family: "8bit";
 }
 
+img#img_output{
+	margin: 40px auto;
+		border-radius: 5px;
+
+	border: 5px solid #fff;
+}
 
 
 canvas{
@@ -29,6 +35,7 @@ h1{
 
 h2{
 	font-size: 105%;
+
 }
 
 
@@ -41,6 +48,7 @@ div#instructions{
 	border-radius: 5px;
 	background: #aaa;
 	border: 5px solid #fff;
+
 }
 
 ul#buttons{
@@ -61,4 +69,36 @@ ul#buttons li button{
   margin-top: 10px;
   padding: 4px 6px;
   background: -webkit-gradient(linear, left top, left bottom, from(#bbb), to(#666));
+}
+
+div#generating_wrapper{
+	position: absolute;
+	z-index: 900;
+	text-align: center;
+	width: 98%;
+}
+div#generating{
+	width: 400px;
+	margin: 200px auto;
+	position: relative;
+	padding: 5px;
+	border: 1px solid #888;
+	border-radius: 5px;
+	z-index: 1000;
+	background-color: #444;	
+}
+
+/* Progress BAr */
+
+div#progress_bar{
+	width: 204px;
+	height: 32px;
+	background: #fff;
+	padding: 2px;
+}
+
+div#progress{
+	width: 0px;
+	height: 30px;
+	background: green;
 }

@@ -2,6 +2,62 @@ document.canvas_width = 800;
 document.canvas_height = 600;
 
 
+/** PROGRESS BAR **/
+/*
+PROGRESS BAR DOESN'T update, until very end (e.g. its useless)
+var ProgressBar = function(){
+	this.MAX_WIDTH = 200;
+	this.INCREMENT = 2;
+	this.pb = document.getElementById("progress_bar");
+	this.progress_div = document.getElementById("progress");
+	this.progress = 0;
+	this.progress_div.style.width = 0
+}
+
+ProgressBar.prototype.updateWidth = function(){
+
+	this.progress_div.style.width = String(this.INCREMENT * this.progress) + "px";
+}
+
+ProgressBar.prototype.init = function(start_value){
+	this.progress = start_value || this.progress;
+	this.updateWidth();
+	this.pb.style.display = "block"
+}
+
+ProgressBar.prototype.updateProgress = function(inc){
+	this.progress = inc;
+	this.updateWidth();
+}
+
+ProgressBar.prototype.updateByOnePercent = function(){
+	this.progress += 1;
+	this.updateWidth();
+}
+
+ProgressBar.prototype.updateByNPercent = function(current, total){
+
+	var p = Math.floor((current / total) * 100);
+	this.progress = p;
+	this.updateWidth();
+}
+
+ProgressBar.prototype.done = function(){
+	this.pb.style.display = "none";
+	this.progress = 0;
+		
+}
+*/
+/*******************/
+
+
+EightBitafy = {
+	instructions : undefined,
+	'img': undefined,
+	'progressBar':undefined
+}
+
+
 function ImageWrapper(){
 	this.img_el = document.getElementById("full_image");
 	this.canvas = document.getElementById("view_it");
@@ -13,16 +69,21 @@ function ImageWrapper(){
 };
 
 ImageWrapper.prototype.clear = function(){
-	img_wrapper.canvas.style.opacity = 0.2;
 	img_wrapper.canvas.getContext("2d")
 		.clearRect(0,0,document.canvas_width, document.canvas_height);
+	EightBitafy.instructions.style.display = "";
+	EightBitafy.img.style.display = "none";
+	
 }
 
 ImageWrapper.prototype.imageOnLoad = function(){
 	//scope is img
 	img_wrapper.width = this.width;
 	img_wrapper.height = this.height;
+	
 	img_wrapper.drawImage();
+
+
 }
 
 ImageWrapper.prototype.addHandler = function(){
@@ -34,6 +95,9 @@ ImageWrapper.prototype.to_8bit = function(){
 	var height = this.canvas.adj_height;
 	var width = this.canvas.adj_width;
 	var square,avg_rgb, best_match;
+	
+	//var current = 0;
+	var total = height * width;
 
 	for (var h = 0; h < height; h = h + 2) {
 		for (var w = 0; w < width; w = w + 2){
@@ -42,14 +106,16 @@ ImageWrapper.prototype.to_8bit = function(){
 			best_match = color_palette.match_rgb(avg_rgb);
 			ctx.fillStyle = "rgb(" +best_match.red + "," + best_match.green+ ","+ best_match.blue+")";
 			ctx.fillRect(w,h,2,2);
-		}
-	};
+			// current += 4;
+			// EightBitafy.progressBar.updateByNPercent(current,total);
 
+		}
+	}
 	//red, green, blue, alpha
-	
 }
 
 ImageWrapper.prototype.drawImage = function(){
+	
 
 	var ctx = this.canvas.getContext("2d");
 	this.canvas.style.opacity = 1;
@@ -76,6 +142,14 @@ ImageWrapper.prototype.drawImage = function(){
 
 	ctx.drawImage(this.img,0,0,this.canvas.adj_width, this.canvas.adj_height);
 	this.to_8bit();
+
+	var src = this.canvas.toDataURL("image/png");
+	EightBitafy.img.setAttribute("src",src);
+	EightBitafy.img.style.display = "block";
+	EightBitafy.instructions.style.display = "none";
+
+	document.getElementById("generating_wrapper").style.display = "none";
+	img_wrapper.img.src = "";
 
 }
 
@@ -154,40 +228,47 @@ function handleImage(image){
 }
 
 function dragenter(e){
-	var ins = document.getElementById("instructions")
-	ins.style.borderColor = "red";
+	EightBitafy.instructions.style.borderColor = "red";
+
 	e.stopPropagation();
 	e.preventDefault();
 }
 
 function dragover(e){
-	var ins = document.getElementById("instructions")
-	ins.style.borderColor = "#red";
+	EightBitafy.instructions.style.borderColor = "red";
+
 	e.stopPropagation();
 	e.preventDefault();
 }
 
 function drop(e){
-	var ins = document.getElementById("instructions")
-	ins.style.borderColor = "#fff";
+	EightBitafy.instructions.style.borderColor = "#fff";
+	document.getElementById("generating_wrapper").style.display = "block";
+
 	e.stopPropagation();
 	e.preventDefault();
 
 	var dt = e.dataTransfer;
 	var image = dt.files[0];
 
+	//EightBitafy.progressBar.init();
+
 	handleImage(image);
 }
 
 function dragleave(e){
-	var ins = document.getElementById("instructions")
-	ins.style.borderColor = "#fff";
+	EightBitafy.instructions.style.borderColor = "#fff";
+
 	e.stopPropagation();
 	e.preventDefault();
 }
 
 
 function load(){
+	EightBitafy.instructions = document.getElementById("instructions");
+	EightBitafy.img = document.getElementById("img_output");
+	//EightBitafy.progressBar = new ProgressBar();
+
 	var dropbox, clear;
 	dropbox = document.getElementById("instructions");
 	clear = document.getElementById("clear")
